@@ -1,0 +1,29 @@
+{% load staticfiles %}
+{% load tz %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+
+
+    <h4>It is {% now "jS F Y H:i" %}</h4>
+    {% get_current_timezone as TIME_ZONE %}
+    <h4>{{TIME_ZONE}}</h4>
+
+
+    <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div id="sidebar">
+        <h2>My blog</h2>
+        <p>This is my blog.</p>
+        
+    </div>
+</body>
+</html>
