@@ -1,0 +1,13 @@
+{% extends "blog/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Test{% endblock %}
+
+{% block content %}
+
+<p class="tags">Tags: {{ Post.objects.all }}</p>
+
+
+
+
+{% endblock %}

@@ -6,6 +6,8 @@ urlpatterns = [
 
     # post list url
     url(r'^$', views.post_list, name='post_list'),
+    # post list by tag
+    url(r'^tag/(?P<tag_slug>[-\w]+)/$', views.post_list, name='post_list_by_tag'),
     # post share url
     url(r'^(?P<post_id>\d+)/share/$', views.post_share, name='post_share'),
     # post detail url

@@ -1,14 +1,21 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from .models import Post, Comment
 from .forms import EmailPostForm
 from django.core.mail import send_mail
 from .forms import EmailPostForm, CommentForm
+from taggit.models import Tag
 
 
-def post_list(request, category=None):
+def post_list(request, tag_slug=None):
     object_list = Post.published.all()
+    tag = None
+    
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        object_list = object_list.filter(tags__in=[tag])    # Post.published.all().filter(tags__in=[tag])
+        
     paginator = Paginator(object_list, 3) # 3 posts in each page
     page = request.GET.get('page')
     try:
@@ -19,8 +26,8 @@ def post_list(request, category=None):
     except EmptyPage:
         # If page is out of range deliver last page of results
         posts = paginator.page(paginator.num_pages)
-    return render(request, 'blog/post/list.html', {'page': page,
-                                                   'posts': posts})
+    return render(request, 'blog/post/list.html', {'page': page, 'posts': posts, 'tag': tag})
+                                                   
 
 
 # class PostListView(ListView):
@@ -66,3 +73,5 @@ def post_share(request, post_id):
         form = EmailPostForm()
     context = {'post':post, 'form':form, 'sent': sent}
     return render(request, 'blog/post/share.html', context)
+
+    
