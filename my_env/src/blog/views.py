@@ -8,6 +8,8 @@ from .forms import EmailPostForm, CommentForm
 from taggit.models import Tag
 from django.db.models import Count
 
+
+
 def post_list(request, tag_slug=None):
     object_list = Post.published.all()
     tag = None
