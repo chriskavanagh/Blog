@@ -9,7 +9,7 @@
     <title>{% block title %}{% endblock %}</title>
 
 
-    <h4>It is {% now "jS F Y H:i" %}</h4>
+    <h4>It is {% now 'jS F Y H:i' %}</h4>
     {% get_current_timezone as TIME_ZONE %}
     <h4>{{TIME_ZONE}}</h4>
 
@@ -26,7 +26,10 @@
 
     <div id="sidebar">
         <h2><b>Django Powered Blog.</b></h2>
-            <p>This is my test blog. I've written {% total_posts %} posts so far.</p>
+            <p>This is my Django blog. I've written {% total_posts %} posts so far.</p>
+
+        <h3>Get The Latest Blogs!</h3>
+            <p><a href="{% url 'blog:post_feed' %}">Subscribe to my RSS feed</a></p>
 
         <h3>Latest posts</h3>
             {% show_latest_posts 3 %}
