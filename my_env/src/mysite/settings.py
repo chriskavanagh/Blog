@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'blog',
     'taggit',
+    'haystack',
+    #'whoosh',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -152,3 +154,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'   # reverse_lazy('login')
+
+# Haystack Search with Solr Backend
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr/blog'
+        },
+    }
