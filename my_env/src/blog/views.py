@@ -7,6 +7,8 @@ from django.core.mail import send_mail
 from .forms import EmailPostForm, CommentForm
 from taggit.models import Tag
 from django.db.models import Count
+from .forms import EmailPostForm, CommentForm, SearchForm
+from haystack.query import SearchQuerySet
 
 
 
@@ -79,6 +81,37 @@ def post_share(request, post_id):
     else:
         form = EmailPostForm()
     context = {'post':post, 'form':form, 'sent': sent}
-    return render(request, 'blog/post/share.html', context)
-
+    return render(request, 'blog/post/share.html', context)    
+    
+    
+def post_search(request):
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            cd = form.cleaned_data
+            results = SearchQuerySet().models(Post).filter(content=cd['query']).load_all()
+            total_results = results.count()
+            context = {'form':form, 'cd':cd, 'results':results, 'total_results':total_results}
+            return render (request, 'blog/post/search.html', context)
+    else:
+        form = SearchForm()
+        context = {'form':form}
+        return render (request, 'blog/post/search.html', context)
+        
+        
+#--Books Example--#      
+# def post_search(request):
+    # cd = None
+    # results = None
+    # total_results = 0
+    # form = SearchForm()
+    # if 'query' in request.GET:
+        # form = SearchForm(request.GET)
+        # if form.is_valid():
+            # cd = form.cleaned_data
+            # results = SearchQuerySet().models(Post).filter(content=cd['query']).load_all()
+            # # count total results
+            # total_results = results.count()
+    # #context = {'form': form,'cd': cd,'results': results,'total_results': total_results}
+    # return render('blog/post/search.html', {'form': form,'cd': cd,'results': results,'total_results': total_results})
     
